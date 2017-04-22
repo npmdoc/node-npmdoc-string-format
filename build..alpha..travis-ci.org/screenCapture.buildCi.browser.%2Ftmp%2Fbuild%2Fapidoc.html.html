@@ -1,0 +1,224 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/davidchambers/string-format">string-format (v0.5.0)</a>
+</h1>
+<h4>Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.string-format">module string-format</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.string-format.string-format">
+            function <span class="apidocSignatureSpan"></span>string-format
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.string-format.create">
+            function <span class="apidocSignatureSpan">string-format.</span>create
+            <span class="apidocSignatureSpan">(transformers)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.string-format.extend">
+            function <span class="apidocSignatureSpan">string-format.</span>extend
+            <span class="apidocSignatureSpan">(prototype, transformers)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.string-format" id="apidoc.module.string-format">module string-format</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.string-format.string-format" id="apidoc.element.string-format.string-format">
+        function <span class="apidocSignatureSpan"></span>string-format
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">string-format = function () {
+  var args, explicit, idx, implicit, message, template;
+  template = arguments[0], args = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
+  idx = 0;
+  explicit = implicit = false;
+  message = 'cannot switch from {} to {} numbering';
+  return template.replace(/([{}])\1|[{](.*?)(?:!(.+?))?[}]/g, function(match, literal, key, transformer) {
+    var value, _ref, _ref1;
+    if (literal) {
+      return literal;
+    }
+    if (key.length) {
+      if (implicit) {
+        throw new ValueError(implicitToExplicit);
+      }
+      explicit = true;
+      value = (_ref = lookup(args, key)) != null ? _ref : '';
+    } else {
+      if (explicit) {
+        throw new ValueError(explicitToImplicit);
+      }
+      implicit = true;
+      value = (_ref1 = args[idx++]) != null ? _ref1 : '';
+    }
+    if (Object.prototype.hasOwnProperty.call(transformers, transformer)) {
+      return transformers[transformer](value);
+    } else {
+      return value;
+    }
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.string-format.create" id="apidoc.element.string-format.create">
+        function <span class="apidocSignatureSpan">string-format.</span>create
+        <span class="apidocSignatureSpan">(transformers)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">create = function (transformers) {
+  if (transformers == null) {
+    transformers = {};
+  }
+  return function() {
+    var args, explicit, idx, implicit, message, template;
+    template = arguments[0], args = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
+    idx = 0;
+    explicit = implicit = false;
+    message = 'cannot switch from {} to {} numbering';
+    return template.replace(/([{}])\1|[{](.*?)(?:!(.+?))?[}]/g, function(match, literal, key, transformer) {
+      var value, _ref, _ref1;
+      if (literal) {
+        return literal;
+      }
+      if (key.length) {
+        if (implicit) {
+          throw new ValueError(implicitToExplicit);
+        }
+        explicit = true;
+        value = (_ref = lookup(args, key)) != null ? _ref : '';
+      } else {
+        if (explicit) {
+          throw new ValueError(explicitToImplicit);
+        }
+        implicit = true;
+        value = (_ref1 = args[idx++]) != null ? _ref1 : '';
+      }
+      if (Object.prototype.hasOwnProperty.call(transformers, transformer)) {
+        return transformers[transformer](value);
+      } else {
+        return value;
+      }
+    });
+  };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.string-format.extend" id="apidoc.element.string-format.extend">
+        function <span class="apidocSignatureSpan">string-format.</span>extend
+        <span class="apidocSignatureSpan">(prototype, transformers)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">extend = function (prototype, transformers) {
+  var $format;
+  $format = create(transformers);
+  prototype.format = function() {
+    return $format.apply(null, [this].concat(__slice.call(arguments)));
+  };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```
+
+In this mode values to be interpolated are supplied to the `format` method
+of a template string. This mode is not enabled by default. The method must
+first be defined via [`format.extend`](#formatextendprototype-transformers):
+
+```javascript
+format.<span class="apidocCodeKeywordSpan">extend</span>(String.prototype)
+```
+
+`format(template, $0, $1, â€¦, $N)` and `template.format($0, $1, â€¦, $N)` can then
+be used interchangeably.
+
+### `format(template, $0, $1, â€¦, $N)`
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
